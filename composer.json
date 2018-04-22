@@ -13,7 +13,7 @@
     ],
 
     "require": {
-        "cakephp/cakephp": ">=3.6.1"
+        "cakephp/cakephp": "~3.6.1"
     },
 
     "require-dev": {
