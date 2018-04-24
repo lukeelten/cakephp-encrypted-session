@@ -13,4 +13,10 @@ use Cake\TestSuite\TestCase;
  */
 class EncryptedMiddlewareTest extends TestCase {
 
+    public function testCreation() {
+        $this->assertTrue(true);
+
+
+    }
+
 }

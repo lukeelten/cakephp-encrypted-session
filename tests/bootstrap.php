@@ -27,4 +27,4 @@ chdir($root);
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
-Plugin::load('Recaptcha', ['path' => dirname(dirname(__FILE__)) . DS]);
+//Plugin::load('EncryptedSession', ['path' => dirname(dirname(__FILE__)) . DS]);
