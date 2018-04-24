@@ -1,47 +1,40 @@
 {
-    "name": "lukeelten/cakephp-encrypted-session",
-    "description": "Encrypted Session Middleware which encrypts the session on server-side with a per-user key.",
-    "type": "cakephp-plugin",
-
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-
-    "keywords": [
-        "cakephp",
-        "session",
-        "encryption"
-    ],
-
-    "require": {
-        "php": ">=7.1",
-        "cakephp/cakephp": "~3.6.1"
-    },
-
-    "require-dev": {
-        "phpunit/phpunit": "^7.1"
-    },
-
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Tobias Derksen",
-            "email": "tobias@nulap.com"
-        }
-    ],
-
-    "support": {
-        "issues": "https://github.com/lukeelten/cakephp-encrypted-session/issues",
-        "source": "https://github.com/lukeelten/cakephp-encrypted-session"
-    },
-
-    "autoload": {
-        "psr-4": {
-            "lukeelten\\EncryptedSession\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "lukeelten\\EncryptedSessionTest\\": "tests"
-        }
+  "name": "lukeelten/cakephp-encrypted-session",
+  "description": "Encrypted Session Middleware which encrypts the session on server-side with a per-user key.",
+  "type": "cakephp-plugin",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "keywords": [
+    "cakephp",
+    "session",
+    "encryption"
+  ],
+  "require": {
+    "php": ">=7.1",
+    "cakephp/cakephp": "~3.6.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.1"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tobias Derksen",
+      "email": "tobias@nulap.com"
     }
+  ],
+  "support": {
+    "issues": "https://github.com/lukeelten/cakephp-encrypted-session/issues",
+    "source": "https://github.com/lukeelten/cakephp-encrypted-session"
+  },
+  "autoload": {
+    "psr-4": {
+      "lukeelten\\EncryptedSession\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "lukeelten\\EncryptedSessionTest\\": "tests"
+    }
+  }
 }

@@ -25,22 +25,41 @@ use lukeelten\EncryptedSession\Network\Session\EncryptedSession;
  */
 class EncryptedSessionMiddleware {
 
-    const COOKIE_KEY = "NULAP_COOKIE";
-
     /**
      * @var array
      */
     protected $_options;
 
+    /**
+     * EncryptedSessionMiddleware constructor.
+     *
+     * ### Options
+     * - `salt`: server-side encryption salt
+     * - `cookieName`: Name of the cookie
+     * - `expire`: Time the cookie expires in
+     * - `path`: Path the cookie applies to
+     * - `secure`: Is the cookie https?
+     * - `httpOnly`: Is the cookie available in the client?
+     *
+     * @param array $options
+     */
     public function __construct(array $options = []) {
-        $this->_options += $options + [
-            "salt" => Configure::read("Session.key") ,
-            "cookieName" => ""
+        $config = Configure::read("Session.Encryption", []);
+
+        // Enforce default options
+        $this->_options += $options + $config + [
+            "salt" => null,
+            "cookieName" => "SESSION_KEY",
+            "httpOnly" => true,
+            "expire" => Configure::read("Session.timeout") ?? strtotime("+1 year"),
+            "secure" => true,
+            "path" => "/"
         ];
     }
 
     /**
      * Invoke middleware
+     * Middleware handles encryption key and instantiate an EncryptedSession object which takes care of transparent session encryption.
      *
      * @param ServerRequest $request
      * @param Response $response
@@ -50,8 +69,8 @@ class EncryptedSessionMiddleware {
     public function __invoke(ServerRequest $request, Response $response, $next) {
         $cookies = $request->getCookieParams();
 
-        if (!empty($cookies[self::COOKIE_KEY])) {
-            $key = $cookies[self::COOKIE_KEY];
+        if (!empty($cookies[$this->_options["cookieName"]])) {
+            $key = $cookies[$this->_options["cookieName"]];
         } else {
             $key = $this->_generateKey();
         }
@@ -67,17 +86,18 @@ class EncryptedSessionMiddleware {
          */
         $response = $next($request, $response);
 
-        return $response->withCookie(self::COOKIE_KEY, [
+        return $response->withCookie($this->_options["cookieName"], [
             'value' => $key,
-            'path' => '/',
-            'httpOnly' => false,
-            'secure' => false,
-            'expire' => strtotime('+1 year')
+            'path' => $this->_options["path"],
+            'httpOnly' => $this->_options["httpOnly"],
+            'secure' => $this->_options["secure"],
+            'expire' => $this->_options["expire"]
         ]);
     }
 
     /**
      * Generate new random key
+     * Uses combination of secure and insecure random bytes and generates a 256bit key.
      *
      * @return string
      */

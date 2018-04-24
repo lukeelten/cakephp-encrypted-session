@@ -6,7 +6,8 @@ namespace lukeelten\EncryptedSession\Network\Session;
 use Cake\Utility\Security;
 
 /**
- * Class EncryptedSession
+ * Class which can be registered as a session engine and decrypts data when session is read and encrypts data when session is written.
+ *
  * @package lukeelten\EncryptedSession\Network\Session
  * @author Tobias Derksen <tobias@nulap.com>
  */
@@ -18,28 +19,43 @@ class EncryptedSession implements \SessionHandlerInterface {
     protected $_key;
 
     /**
+     * Server-side salt to use for de- and encryption.
+     * Using a server-side salt increases security so the real encryption key is not stored at one place.
+     *
      * @var string|null
      */
     protected $_salt;
 
     /**
+     * Original Session Engine
      * @var \SessionHandlerInterface
      */
     protected $_engine;
 
     /**
      * EncryptedSession constructor.
-     * @param string $key
-     * @param string $salt
-     * @param \SessionHandlerInterface $engine
+     *
+     * @param string $key Encryption key to use for this session
+     * @param string|null $salt Service-side salt. If null, Security.Salt will be used.
+     * @param \SessionHandlerInterface $engine Original session engine
      */
     public function __construct(string $key, ?string $salt, \SessionHandlerInterface $engine) {
         $this->_key = $key;
         $this->_salt = $salt;
         $this->_engine = $engine;
+
+        if (empty($this->_key)) {
+            throw new \InvalidArgumentException("Empty encryption key given to EncryptedSession");
+        }
+
+        if (empty($this->_engine)) {
+            throw new \InvalidArgumentException("No session engine found. Please configure a session engine before using EncryptedSession.");
+        }
     }
 
     /**
+     * Method proxies call to original session engine
+     *
      * {@inheritdoc }
      */
     public function close() {
@@ -47,6 +63,8 @@ class EncryptedSession implements \SessionHandlerInterface {
     }
 
     /**
+     * Method proxies call to original session engine
+     *
      * {@inheritdoc }
      */
     public function destroy($session_id) {
@@ -54,6 +72,8 @@ class EncryptedSession implements \SessionHandlerInterface {
     }
 
     /**
+     * Method proxies call to original session engine
+     *
      * {@inheritdoc }
      */
     public function gc($maxlifetime) {
@@ -61,6 +81,8 @@ class EncryptedSession implements \SessionHandlerInterface {
     }
 
     /**
+     * Method proxies call to original session engine
+     *
      * {@inheritdoc }
      */
     public function open($save_path, $name) {
@@ -68,6 +90,8 @@ class EncryptedSession implements \SessionHandlerInterface {
     }
 
     /**
+     * Reads session from original session engine and decrypts the data.
+     *
      * {@inheritdoc }
      */
     public function read($session_id) {
@@ -84,6 +108,8 @@ class EncryptedSession implements \SessionHandlerInterface {
     }
 
     /**
+     * Encrypts session data with a per-user key and forward the encrypted data to the original session engine
+     *
      * {@inheritdoc }
      */
     public function write($session_id, $data) {
