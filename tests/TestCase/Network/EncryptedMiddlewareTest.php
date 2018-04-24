@@ -14,6 +14,10 @@ class EncryptedMiddlewareTest extends TestCase
 
     public function testCreation()
     {
-        $this->assertTrue(true);
+        $instance = new EncryptedMiddlewareTest();
+
+        $this->assertNotNull($instance);
     }
+
+
 }
