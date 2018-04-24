@@ -50,10 +50,10 @@ class EncryptedSessionMiddleware
         // Enforce default options
         $this->_options += $options + $config + [
             "salt" => null,
-            "cookieName" => "SESSION_KEY",
+            "cookieName" => "CAKE_SESSION_KEY",
             "httpOnly" => true,
             "expire" => Configure::read("Session.timeout") ?? strtotime("+1 year"),
-            "secure" => true,
+            "secure" => false,
             "path" => "/"
         ];
     }
