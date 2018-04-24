@@ -48,7 +48,7 @@ class EncryptedSessionMiddleware
         $config = Configure::read("Session.Encryption", []);
 
         // Enforce default options
-        $this->_options += $options + $config + [
+        $this->_options = $options + $config + [
             "salt" => null,
             "cookieName" => "CAKE_SESSION_KEY",
             "httpOnly" => true,
