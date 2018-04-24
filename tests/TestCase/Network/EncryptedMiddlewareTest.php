@@ -18,6 +18,4 @@ class EncryptedMiddlewareTest extends TestCase
 
         $this->assertNotNull($instance);
     }
-
-
 }
