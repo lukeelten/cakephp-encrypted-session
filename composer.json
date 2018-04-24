@@ -37,5 +37,11 @@
     "psr-4": {
       "lukeelten\\EncryptedSessionTest\\": "tests/TestCase"
     }
+  },
+
+  "scripts": {
+    "test": "phpunit",
+    "cs": "phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+    "cs-fix": "phpcbf -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests"
   }
 }

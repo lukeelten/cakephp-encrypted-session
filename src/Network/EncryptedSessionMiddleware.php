@@ -8,7 +8,6 @@ use Cake\Http\ServerRequest;
 use Cake\Utility\Security;
 use lukeelten\EncryptedSession\Network\Session\EncryptedSession;
 
-
 /**
  * Class EncryptedSessionMiddleware
  *
@@ -23,7 +22,8 @@ use lukeelten\EncryptedSession\Network\Session\EncryptedSession;
  * @package Nulap\Library
  * @author Tobias Derksen <tobias@nulap.com>
  */
-class EncryptedSessionMiddleware {
+class EncryptedSessionMiddleware
+{
 
     /**
      * @var array
@@ -41,9 +41,10 @@ class EncryptedSessionMiddleware {
      * - `secure`: Is the cookie https?
      * - `httpOnly`: Is the cookie available in the client?
      *
-     * @param array $options
+     * @param array $options Middleware options
      */
-    public function __construct(array $options = []) {
+    public function __construct(array $options = [])
+    {
         $config = Configure::read("Session.Encryption", []);
 
         // Enforce default options
@@ -61,12 +62,13 @@ class EncryptedSessionMiddleware {
      * Invoke middleware
      * Middleware handles encryption key and instantiate an EncryptedSession object which takes care of transparent session encryption.
      *
-     * @param ServerRequest $request
-     * @param Response $response
-     * @param callable $next
-     * @return Response
+     * @param ServerRequest $request Request object
+     * @param Response $response Response object
+     * @param callable $next Next middleware in chain
+     * @return Response Modified response object
      */
-    public function __invoke(ServerRequest $request, Response $response, $next) {
+    public function __invoke(ServerRequest $request, Response $response, $next)
+    {
         $cookies = $request->getCookieParams();
 
         if (!empty($cookies[$this->_options["cookieName"]])) {
@@ -80,10 +82,6 @@ class EncryptedSessionMiddleware {
 
         // Register self as session handler
         $request->getSession()->engine($engine);
-
-        /**
-         * @var $response Response
-         */
         $response = $next($request, $response);
 
         return $response->withCookie($this->_options["cookieName"], [
@@ -99,12 +97,13 @@ class EncryptedSessionMiddleware {
      * Generate new random key
      * Uses combination of secure and insecure random bytes and generates a 256bit key.
      *
-     * @return string
+     * @return string Generated key
      */
-    private function _generateKey() : string {
+    private function _generateKey() : string
+    {
         $random = Security::randomBytes(2048);
         $random .= Security::insecureRandomBytes(2048);
+
         return Security::hash($random, "sha256");
     }
-
 }

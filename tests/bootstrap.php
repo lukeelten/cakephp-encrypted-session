@@ -3,6 +3,7 @@
 // Copied from https://github.com/agiletechvn/Recaptcha/blob/master/tests/bootstrap.php
 
 use Cake\Core\Plugin;
+
 /*
  * Test suite bootstrap
  *

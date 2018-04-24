@@ -2,7 +2,6 @@
 
 namespace lukeelten\EncryptedSession\Network\Session;
 
-
 use Cake\Utility\Security;
 
 /**
@@ -11,7 +10,8 @@ use Cake\Utility\Security;
  * @package lukeelten\EncryptedSession\Network\Session
  * @author Tobias Derksen <tobias@nulap.com>
  */
-class EncryptedSession implements \SessionHandlerInterface {
+class EncryptedSession implements \SessionHandlerInterface
+{
 
     /**
      * @var string
@@ -39,7 +39,8 @@ class EncryptedSession implements \SessionHandlerInterface {
      * @param string|null $salt Service-side salt. If null, Security.Salt will be used.
      * @param \SessionHandlerInterface $engine Original session engine
      */
-    public function __construct(string $key, ?string $salt, \SessionHandlerInterface $engine) {
+    public function __construct(string $key, ?string $salt, \SessionHandlerInterface $engine)
+    {
         $this->_key = $key;
         $this->_salt = $salt;
         $this->_engine = $engine;
@@ -56,46 +57,53 @@ class EncryptedSession implements \SessionHandlerInterface {
     /**
      * Method proxies call to original session engine
      *
-     * {@inheritdoc }
+     * @return bool
      */
-    public function close() {
+    public function close()
+    {
         return $this->_engine->close();
     }
 
     /**
      * Method proxies call to original session engine
      *
-     * {@inheritdoc }
+     * @param string $sessionId Session ID
+     * @return bool
      */
-    public function destroy($session_id) {
-        return $this->_engine->destroy($session_id);
+    public function destroy($sessionId)
+    {
+        return $this->_engine->destroy($sessionId);
     }
 
     /**
      * Method proxies call to original session engine
-     *
-     * {@inheritdoc }
+     * @param int $maxlifetime Session lifetime
+     * @return bool
      */
-    public function gc($maxlifetime) {
+    public function gc($maxlifetime)
+    {
         return $this->_engine->gc($maxlifetime);
     }
 
     /**
      * Method proxies call to original session engine
-     *
-     * {@inheritdoc }
+     * @param string $savePath Session save path
+     * @param string $name Session name
+     * @return bool
      */
-    public function open($save_path, $name) {
-        return $this->_engine->open($save_path, $name);
+    public function open($savePath, $name)
+    {
+        return $this->_engine->open($savePath, $name);
     }
 
     /**
      * Reads session from original session engine and decrypts the data.
-     *
-     * {@inheritdoc }
+     * @param string $sessionId Session ID
+     * @return bool|string
      */
-    public function read($session_id) {
-        $data = $this->_engine->read($session_id);
+    public function read($sessionId)
+    {
+        $data = $this->_engine->read($sessionId);
 
         if (!empty($data)) {
             $decrypted = Security::decrypt($data, $this->_key, $this->_salt);
@@ -109,14 +117,16 @@ class EncryptedSession implements \SessionHandlerInterface {
 
     /**
      * Encrypts session data with a per-user key and forward the encrypted data to the original session engine
-     *
-     * {@inheritdoc }
+     * @param string $sessionId Session ID
+     * @param string $data Session data
+     * @return bool
      */
-    public function write($session_id, $data) {
+    public function write($sessionId, $data)
+    {
         if (!empty($data)) {
             $data = Security::encrypt($data, $this->_key, $this->_salt);
         }
 
-        return $this->_engine->write($session_id, $data);
+        return $this->_engine->write($sessionId, $data);
     }
 }
