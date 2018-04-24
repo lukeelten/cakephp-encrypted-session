@@ -14,7 +14,7 @@
     "cakephp/cakephp": "~3.6.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "^7.1"
+    "phpunit/phpunit": "~6.0"
   },
   "license": "MIT",
   "authors": [
@@ -34,7 +34,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "lukeelten\\EncryptedSessionTest\\": "tests"
+      "lukeelten\\EncryptedSessionTest\\": "tests/TestCase"
     }
   }
 }
