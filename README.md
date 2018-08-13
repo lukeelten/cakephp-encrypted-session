@@ -27,9 +27,9 @@ The plugin does not need any loading during bootstrap.
 
 ## Configuration
 There are several options to configure the behavior, nevertheless the plugin contains a useful set of default
-values, so you __do not need any configuration at all__.
+values so you __do not need any configuration at all__.
 
-Nevertheless, it is recommended to configure at least a encryption salt, otherwise Security.salt will be used.
+Nevertheless, it is recommended to configure at least an encryption salt, otherwise *Security.salt* will be used.
 
 Possible options to add to application config:
 ```php
@@ -52,9 +52,9 @@ $middleware->add(new EncryptedSessionMiddleware());
 ```
 
 ### Important Note:
-If this middleware is used in combination with "EncryptedCookieMiddleware" and you want to encrypt the session key cookie 
-as well, you must ensure, that the "EncryptedCookieMiddleware" is loaded into the middleware chain BEFORE the
-"EncryptedSessionMiddleware".
+If this middleware is used in combination with *EncryptedCookieMiddleware* and you want to encrypt the session key cookie 
+as well, you must ensure, that the *EncryptedCookieMiddleware* is loaded into the middleware chain __BEFORE__ the
+*EncryptedSessionMiddleware*.
 
 ```php
 $middleware->add(new EncryptedCookieMiddleware())
