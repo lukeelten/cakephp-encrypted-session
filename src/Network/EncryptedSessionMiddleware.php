@@ -91,8 +91,10 @@ class EncryptedSessionMiddleware
                 $timestamp = strtotime($expires);
                 $expires = new \Datetime();
                 $expires->setTimestamp($timestamp);
+            } elseif (is_numeric($expires)) {
+                $expires = (new \DateTime())->setTimestamp($expires);
             } else {
-                $expires = new \DateTimeImmutable($expires);
+                $expires = new \DateTime($expires);
             }
         }
 
