@@ -3,10 +3,10 @@
 namespace lukeelten\EncryptedSession\Network;
 
 use Cake\Core\Configure;
+use Cake\Http\Cookie\Cookie;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Utility\Security;
-use Cake\Http\Cookie\Cookie;
 use lukeelten\EncryptedSession\Network\Session\EncryptedSession;
 
 /**
@@ -91,12 +91,12 @@ class EncryptedSessionMiddleware
         }
 
         $cookie = new Cookie(
-            $this->_options["cookieName"], 
-            $key, 
-            $expires, 
-            $this->_options["path"], 
-            '', 
-            $this->_options["secure"], 
+            $this->_options["cookieName"],
+            $key,
+            $expires,
+            $this->_options["path"],
+            '',
+            $this->_options["secure"],
             $this->_options["httpOnly"]
         );
 
