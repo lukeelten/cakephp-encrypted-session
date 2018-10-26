@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Utility\Security;
+use Cake\Http\Cookie\Cookie;
 use lukeelten\EncryptedSession\Network\Session\EncryptedSession;
 
 /**
@@ -84,13 +85,22 @@ class EncryptedSessionMiddleware
         $request->getSession()->engine($engine);
         $response = $next($request, $response);
 
-        return $response->withCookie($this->_options["cookieName"], [
-            'value' => $key,
-            'path' => $this->_options["path"],
-            'httpOnly' => $this->_options["httpOnly"],
-            'secure' => $this->_options["secure"],
-            'expire' => $this->_options["expire"]
-        ]);
+        $expires = $this->_options["expire"];
+        if (!$expires instanceof \DateTime && !$expires instanceof \DateTimeImmutable) {
+            $expires = new \DateTimeImmutable($expires);
+        }
+
+        $cookie = new Cookie(
+            $this->_options["cookieName"], 
+            $key, 
+            $expires, 
+            $this->_options["path"], 
+            '', 
+            $this->_options["secure"], 
+            $this->_options["httpOnly"]
+        );
+
+        return $response->withCookie($cookie);
     }
 
     /**
