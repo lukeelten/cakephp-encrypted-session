@@ -87,7 +87,13 @@ class EncryptedSessionMiddleware
 
         $expires = $this->_options["expire"];
         if (!$expires instanceof \DateTime && !$expires instanceof \DateTimeImmutable) {
-            $expires = new \DateTimeImmutable($expires);
+            if (is_string($expires) && substr($expires, 0, 1) == "+") {
+                $timestamp = strtotime($expires);
+                $expires = new \Datetime();
+                $expires->setTimestamp($timestamp);
+            } else {
+                $expires = new \DateTimeImmutable($expires);
+            }
         }
 
         $cookie = new Cookie(
